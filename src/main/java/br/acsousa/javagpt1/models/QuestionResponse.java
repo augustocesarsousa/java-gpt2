@@ -8,7 +8,6 @@ import lombok.Data;
 
 @Data
 public class QuestionResponse {
-
 	
 	private List<ChatCompletionChoice> choices;
 }

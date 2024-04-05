@@ -24,8 +24,8 @@ public class ApiGpmService {
 		
 		ChatCompletionRequest request = ChatCompletionRequest.builder()
 				.messages(List.of(chat))
-				.n(10)
-				.temperature(0.7)
+				.n(null)
+				.temperature(0.5)
 				.model(MODEL)
 				.build();
 		
