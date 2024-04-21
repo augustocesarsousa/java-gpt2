@@ -2,7 +2,7 @@ package br.acsousa.javagpt1.services;
 
 import java.util.List;
 
-import br.acsousa.javagpt1.models.QuestionResponse;
+import br.acsousa.javagpt1.entities.QuestionResponse;
 import org.springframework.stereotype.Service;
 
 import com.theokanning.openai.completion.chat.ChatCompletionRequest;

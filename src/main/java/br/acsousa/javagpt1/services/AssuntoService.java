@@ -1,11 +1,14 @@
 package br.acsousa.javagpt1.services;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import br.acsousa.javagpt1.models.Assunto;
-import br.acsousa.javagpt1.models.Materia;
+import br.acsousa.javagpt1.dtos.AssuntoDTO;
+import br.acsousa.javagpt1.entities.Assunto;
+import br.acsousa.javagpt1.entities.Materia;
 import br.acsousa.javagpt1.repositories.AssuntoRepository;
 import br.acsousa.javagpt1.repositories.MateriaRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 @Service
@@ -16,20 +19,45 @@ public class AssuntoService {
 	
 	@Autowired
 	private MateriaRepository materiaRepository;
+
+	@Autowired
+	private ModelMapper modelMapper;
 	
-	public Assunto getById(Long id) {
-		return assuntoRepository.findById(id).get();
+	public AssuntoDTO getById(Long id) {
+		var assunto = assuntoRepository.findById(id).get();
+
+		return modelMapper.map(assunto, AssuntoDTO.class);
 	}
 	
-	public List<Assunto> getAll(){
-		return assuntoRepository.findAll();
+	public List<AssuntoDTO> getAll(){
+		List<Assunto> assuntoList = assuntoRepository.findAll();
+		List<AssuntoDTO> assuntoListDTO = new ArrayList<>();
+
+		for (Assunto assunto : assuntoList) {
+			assuntoListDTO.add(modelMapper.map(assunto, AssuntoDTO.class));
+		}
+
+		return assuntoListDTO;
+	}
+
+	public List<AssuntoDTO> getAssuntoByMateriaId(Long materiaId) {
+		List<Assunto> assuntoList = assuntoRepository.findByMateriaId(materiaId);
+		List<AssuntoDTO> assuntoListDTO = new ArrayList<>();
+
+		for (Assunto assunto : assuntoList) {
+			assuntoListDTO.add(modelMapper.map(assunto, AssuntoDTO.class));
+		}
+
+		return assuntoListDTO;
 	}
 	
-	public Assunto save(Assunto assunto) {
-		
-		Materia materia = materiaRepository.findById(assunto.getMateria().getId()).get();
+	public AssuntoDTO save(AssuntoDTO assuntoDTO) {
+		Materia materia = materiaRepository.findById(assuntoDTO.getMateria().getId()).get();
+		Assunto assunto = modelMapper.map(assuntoDTO, Assunto.class);
 		assunto.setMateria(materia);
+
+		assunto = assuntoRepository.save(assunto);
 		
-		return assuntoRepository.save(assunto);
+		return modelMapper.map(assunto, AssuntoDTO.class);
 	}
 }

@@ -1,9 +1,10 @@
 package br.acsousa.javagpt1.controllers;
 
-import br.acsousa.javagpt1.models.AnswerRequest;
-import br.acsousa.javagpt1.models.Assunto;
-import br.acsousa.javagpt1.models.QuestionRequest;
-import br.acsousa.javagpt1.models.QuestionResponse;
+import br.acsousa.javagpt1.dtos.AssuntoDTO;
+import br.acsousa.javagpt1.entities.AnswerRequest;
+import br.acsousa.javagpt1.entities.Assunto;
+import br.acsousa.javagpt1.entities.QuestionRequest;
+import br.acsousa.javagpt1.entities.QuestionResponse;
 import br.acsousa.javagpt1.services.ApiGpmService;
 import br.acsousa.javagpt1.services.AssuntoService;
 import com.theokanning.openai.completion.chat.ChatCompletionChoice;
@@ -27,9 +28,9 @@ public class ApiGpmController {
 	@PostMapping("/chat/question")
 	public String getQuestion(@RequestBody QuestionRequest request){
 		
-		Assunto assunto = assuntoService.getById(request.getIdAssunto());
+		AssuntoDTO assuntoDTO = assuntoService.getById(request.getIdAssunto());
 		
-		String prompt = "Me faça uma pergunta de " + assunto.getMateria().getNome() + " sobre " + assunto.getNome() + ". O fomrato da resposta deve ser Pergunta: mais a descrição da pergunta e em seguida a resposta.";
+		String prompt = "Me faça uma pergunta de " + assuntoDTO.getMateria().getNome() + " sobre " + assuntoDTO.getNome() + ". O fomrato da resposta deve ser Pergunta: mais a descrição da pergunta e em seguida a resposta.";
 		
 		QuestionResponse response = apiGpmService.generate(prompt);
 		
@@ -41,9 +42,9 @@ public class ApiGpmController {
 
 		List<String> responses = new ArrayList<>();
 
-		Assunto assunto = assuntoService.getById(request.getIdAssunto());
+		AssuntoDTO assuntoDTO = assuntoService.getById(request.getIdAssunto());
 
-		String prompt = "Me faça uma pergunta de " + assunto.getMateria().getNome() + " sobre " + assunto.getNome() + ". O fomrato da resposta deve ser Pergunta: mais a descrição da pergunta e em seguida a resposta.";
+		String prompt = "Me faça uma pergunta de " + assuntoDTO.getMateria().getNome() + " sobre " + assuntoDTO.getNome() + ". O fomrato da resposta deve ser Pergunta: mais a descrição da pergunta e em seguida a resposta.";
 
 		QuestionResponse response = apiGpmService.generate(prompt);
 

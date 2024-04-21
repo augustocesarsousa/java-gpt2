@@ -1,4 +1,4 @@
-package br.acsousa.javagpt1.models;
+package br.acsousa.javagpt1.entities;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

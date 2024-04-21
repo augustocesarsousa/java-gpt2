@@ -2,7 +2,7 @@ package br.acsousa.javagpt1.controllers;
 
 import java.util.List;
 
-import br.acsousa.javagpt1.models.Materia;
+import br.acsousa.javagpt1.dtos.MateriaDTO;
 import br.acsousa.javagpt1.services.MateriaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,13 +21,13 @@ public class MateriaController {
 	private MateriaService materiaService;
 	
 	@PostMapping
-	public ResponseEntity<Materia> save(@RequestBody Materia materia){
+	public ResponseEntity<MateriaDTO> save(@RequestBody MateriaDTO materiaDTO){
 		return ResponseEntity.status(HttpStatus.CREATED)
-				.body(materiaService.save(materia));
+				.body(materiaService.save(materiaDTO));
 	}
 	
 	@GetMapping
-	public ResponseEntity<List<Materia>> getAll(){
+	public ResponseEntity<List<MateriaDTO>> getAll(){
 		return ResponseEntity.status(HttpStatus.OK)
 				.body(materiaService.getAll());
 	}
