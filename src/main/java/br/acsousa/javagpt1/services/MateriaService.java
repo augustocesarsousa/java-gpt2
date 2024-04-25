@@ -6,6 +6,7 @@ import java.util.List;
 import br.acsousa.javagpt1.entities.Materia;
 import br.acsousa.javagpt1.dtos.MateriaDTO;
 import br.acsousa.javagpt1.repositories.MateriaRepository;
+import br.acsousa.javagpt1.services.exceptions.EntityAlreadyExisting;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,6 +37,10 @@ public class MateriaService {
 	}
 	
 	public MateriaDTO save(MateriaDTO materiaDTO) {
+		if(materiaRepository.findByNome(materiaDTO.getNome()) != null) {
+			throw new EntityAlreadyExisting("Já existe uma matéria com essa descrição (" + materiaDTO.getNome() + ")");
+		}
+
 		Materia materia = modelMapper.map(materiaDTO, Materia.class);
 
 		materia = materiaRepository.save(materia);

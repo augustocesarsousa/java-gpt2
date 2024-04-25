@@ -10,4 +10,6 @@ import java.util.List;
 public interface AssuntoRepository extends JpaRepository<Assunto, Long>{
 
     List<Assunto> findByMateriaId(Long id);
+
+    Assunto findByMateriaIdAndNome(Long id, String nome);
 }

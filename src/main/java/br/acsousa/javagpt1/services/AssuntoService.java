@@ -8,6 +8,8 @@ import br.acsousa.javagpt1.entities.Assunto;
 import br.acsousa.javagpt1.entities.Materia;
 import br.acsousa.javagpt1.repositories.AssuntoRepository;
 import br.acsousa.javagpt1.repositories.MateriaRepository;
+import br.acsousa.javagpt1.services.exceptions.EntityAlreadyExisting;
+import br.acsousa.javagpt1.services.exceptions.ResourceNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -52,7 +54,18 @@ public class AssuntoService {
 	}
 	
 	public AssuntoDTO save(AssuntoDTO assuntoDTO) {
-		Materia materia = materiaRepository.findById(assuntoDTO.getMateria().getId()).get();
+		Materia materia = materiaRepository.findById(assuntoDTO.getMateria().getId())
+				.orElseThrow(() -> new ResourceNotFoundException("Matéria id " +
+				assuntoDTO.getMateria().getId() + " não encontrada"));
+
+		if(assuntoRepository.findByMateriaIdAndNome(
+				assuntoDTO.getMateria().getId(),
+				assuntoDTO.getNome())
+				!= null) {
+			throw new EntityAlreadyExisting("Assunto (" + assuntoDTO.getNome() +
+					"), já existe para a matéria (" + materia.getNome() + ")");
+		}
+
 		Assunto assunto = modelMapper.map(assuntoDTO, Assunto.class);
 		assunto.setMateria(materia);
 
