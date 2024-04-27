@@ -25,8 +25,10 @@ public class AssuntoService {
 	@Autowired
 	private ModelMapper modelMapper;
 	
-	public AssuntoDTO getById(Long id) {
-		var assunto = assuntoRepository.findById(id).get();
+	public AssuntoDTO findById(Long id) {
+		var assunto = assuntoRepository.findById(id).orElseThrow(
+				() -> new ResourceNotFoundException("Assunto id (" + id + ") não encontrado.")
+		);
 
 		return modelMapper.map(assunto, AssuntoDTO.class);
 	}

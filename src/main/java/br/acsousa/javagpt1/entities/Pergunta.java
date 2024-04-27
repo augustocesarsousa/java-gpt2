@@ -3,7 +3,7 @@ package br.acsousa.javagpt1.entities;
 import lombok.Data;
 
 @Data
-public class QuestionRequest {
+public class Pergunta {
 
-	private Long idAssunto;
+	private String descricao;
 }
