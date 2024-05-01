@@ -10,7 +10,7 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "gpm_materia")
+@Table(name = "tb_materia")
 public class Materia {
 	
 	@Id

@@ -11,7 +11,7 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "gpm_assunto")
+@Table(name = "tb_assunto")
 public class Assunto {
 
 	@Id
