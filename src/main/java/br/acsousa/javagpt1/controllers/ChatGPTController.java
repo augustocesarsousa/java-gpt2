@@ -5,7 +5,7 @@ import br.acsousa.javagpt1.dtos.RespostaDTO;
 import br.acsousa.javagpt1.services.ChatGPTService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
+@CrossOrigin
 @RestController
 @RequestMapping(value = "/chat")
 public class ChatGPTController {
