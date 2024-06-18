@@ -2,6 +2,7 @@ package br.acsousa.javagpt1.controllers.exceptions;
 
 import java.time.Instant;
 
+import br.acsousa.javagpt1.services.exceptions.DataBaseException;
 import br.acsousa.javagpt1.services.exceptions.ResourceNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -25,6 +26,18 @@ public class ControllerExceptionHandler {
         standardError.setMessage(e.getMessage());
         standardError.setPath(request.getRequestURI());
         return ResponseEntity.status(httpStatus).body(standardError);
+    }
+
+    @ExceptionHandler(DataBaseException.class)
+    public ResponseEntity<StandardError> database(DataBaseException e, HttpServletRequest request){
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        StandardError err = new StandardError();
+        err.setTimestamp(Instant.now());
+        err.setStatus(status.value());
+        err.setError("Database exception");
+        err.setMessage(e.getMessage());
+        err.setPath(request.getRequestURI());
+        return ResponseEntity.status(status).body(err);
     }
 
     @ExceptionHandler(ResourceNotFoundException.class)

@@ -10,10 +10,13 @@ import br.acsousa.javagpt1.entities.Materia;
 import br.acsousa.javagpt1.repositories.AssuntoRepository;
 import br.acsousa.javagpt1.repositories.MateriaRepository;
 import br.acsousa.javagpt1.repositories.custons.AssuntoCustomRepository;
+import br.acsousa.javagpt1.services.exceptions.DataBaseException;
 import br.acsousa.javagpt1.services.exceptions.EntityAlreadyExisting;
 import br.acsousa.javagpt1.services.exceptions.ResourceNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -115,6 +118,16 @@ public class AssuntoService {
 		assunto = assuntoRepository.save(assunto);
 
 		return modelMapper.map(assunto, AssuntoDTO.class);
+	}
+
+	public void delete(Long id) {
+		try {
+			assuntoRepository.deleteById(id);
+		}catch(EmptyResultDataAccessException e) {
+			throw new ResourceNotFoundException("Id not found = " + id);
+		}catch(DataIntegrityViolationException e) {
+			throw new DataBaseException("Integrity violation");
+		}
 	}
 
 }

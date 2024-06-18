@@ -2,6 +2,7 @@ package br.acsousa.javagpt1.controllers;
 
 import java.util.List;
 
+import br.acsousa.javagpt1.dtos.AssuntoDTO;
 import br.acsousa.javagpt1.dtos.MateriaDTO;
 import br.acsousa.javagpt1.services.MateriaService;
 import jakarta.validation.Valid;
@@ -44,5 +45,11 @@ public class MateriaController {
 	@PutMapping(value = "/{id}")
 	public ResponseEntity<MateriaDTO> update(@PathVariable Long id, @RequestBody MateriaDTO materiaDTO) {
 		return ResponseEntity.status(HttpStatus.OK).body(materiaService.update(id, materiaDTO));
+	}
+
+	@DeleteMapping(value = "/{id}")
+	public ResponseEntity<MateriaDTO> delete(@PathVariable Long id) {
+		materiaService.delete(id);
+		return ResponseEntity.noContent().build();
 	}
 }

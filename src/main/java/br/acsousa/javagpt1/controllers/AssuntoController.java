@@ -51,5 +51,11 @@ public class AssuntoController {
 	public ResponseEntity<AssuntoDTO> update(@PathVariable Long id, @RequestBody AssuntoDTO assuntoDTO) {
 		return ResponseEntity.status(HttpStatus.OK).body(assuntoService.update(id, assuntoDTO));
 	}
+
+	@DeleteMapping(value = "/{id}")
+	public ResponseEntity<AssuntoDTO> delete(@PathVariable Long id) {
+		assuntoService.delete(id);
+		return ResponseEntity.noContent().build();
+	}
 	
 }
