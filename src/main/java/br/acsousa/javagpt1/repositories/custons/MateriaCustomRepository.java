@@ -2,6 +2,7 @@ package br.acsousa.javagpt1.repositories.custons;
 
 import br.acsousa.javagpt1.entities.Materia;
 import jakarta.persistence.EntityManager;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.PageImpl;
@@ -13,11 +14,8 @@ import java.util.List;
 @Repository
 public class MateriaCustomRepository {
 
-    private final EntityManager entityManager;
-
-    public MateriaCustomRepository(EntityManager entityManager) {
-        this.entityManager = entityManager;
-    }
+    @Autowired
+    private EntityManager entityManager;
 
     public Page<Materia> findByFilter(Long id, String nome, Pageable pageable) {
         Sort sort = pageable.getSort();
@@ -39,8 +37,8 @@ public class MateriaCustomRepository {
             sql.append("AND LOWER(m.nome) LIKE :nome ");
         }
 
-        if (!"".equals(orderBy)) {
-            sql.append("ORDER BY m." + orderBy);
+        if (!orderBy.isEmpty()) {
+            sql.append("ORDER BY m.").append(orderBy);
         }
 
         var query = entityManager.createQuery(sql.toString(), Materia.class);
