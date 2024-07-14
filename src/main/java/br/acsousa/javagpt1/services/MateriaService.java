@@ -13,10 +13,11 @@ import br.acsousa.javagpt1.services.exceptions.ResourceNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class MateriaService {
@@ -62,14 +63,14 @@ public class MateriaService {
 		Materia materia = modelMapper.map(materiaDTO, Materia.class);
 
 		materia = materiaRepository.save(materia);
-		materiaDTO = modelMapper.map(materiaRepository.save(materia), MateriaDTO.class);
+		materiaDTO = modelMapper.map(materia, MateriaDTO.class);
 
 		return materiaDTO;
 	}
 
 	public MateriaDTO update(Long id, MateriaDTO materiaDTO) {
 		materiaRepository.findById(id).orElseThrow(
-				() -> new ResourceNotFoundException("Matéria id = " + id + " não encontrada")
+				() -> new ResourceNotFoundException("Matéria id " + id + " não encontrada")
 		);
 
 		if(materiaRepository.findByNome(materiaDTO.getNome()) != null) {
@@ -84,13 +85,16 @@ public class MateriaService {
 		return modelMapper.map(materia, MateriaDTO.class);
 	}
 
-	public void delete(Long id) {
+	@Transactional(propagation = Propagation.SUPPORTS)
+    public void delete(Long id) {
+		if(!materiaRepository.existsById(id)){
+			throw new ResourceNotFoundException("Matéria id " + id + " não encontrada");
+		}
 		try {
 			materiaRepository.deleteById(id);
-		}catch(EmptyResultDataAccessException e) {
-			throw new ResourceNotFoundException("Id not found = " + id);
-		}catch(DataIntegrityViolationException e) {
-			throw new DataBaseException("Integrity violation");
+		}
+		catch(DataIntegrityViolationException e) {
+			throw new DataBaseException("Integridade violada, a matéria id " + id + " possui dependência");
 		}
 	}
 }

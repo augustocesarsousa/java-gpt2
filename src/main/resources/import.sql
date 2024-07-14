@@ -5,6 +5,7 @@ INSERT INTO tb_materia (nome) VALUES ('C#');
 INSERT INTO tb_materia (nome) VALUES ('C++');
 INSERT INTO tb_materia (nome) VALUES ('PHP');
 INSERT INTO tb_materia (nome) VALUES ('Go');
+INSERT INTO tb_materia (nome) VALUES ('Ruby');
 
 INSERT INTO tb_assunto (nome, materia_id) VALUES ('Tipos primitivos', 1);
 INSERT INTO tb_assunto (nome, materia_id) VALUES ('Orientação a objeto', 1);
