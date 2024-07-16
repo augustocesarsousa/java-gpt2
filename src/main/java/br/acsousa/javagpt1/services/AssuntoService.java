@@ -13,6 +13,7 @@ import br.acsousa.javagpt1.repositories.custons.AssuntoCustomRepository;
 import br.acsousa.javagpt1.services.exceptions.DataBaseException;
 import br.acsousa.javagpt1.services.exceptions.EntityAlreadyExisting;
 import br.acsousa.javagpt1.services.exceptions.ResourceNotFoundException;
+import org.jetbrains.annotations.NotNull;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -36,14 +37,15 @@ public class AssuntoService {
 	private ModelMapper modelMapper;
 	
 	public AssuntoDTO findById(Long id) {
-		var assunto = assuntoRepository.findById(id).orElseThrow(
-				() -> new ResourceNotFoundException("Assunto id (" + id + ") não encontrado.")
+		Assunto assunto = assuntoRepository.findById(id).orElseThrow(
+				() -> new ResourceNotFoundException("Assunto id " + id + " não encontrado")
 		);
 
 		return modelMapper.map(assunto, AssuntoDTO.class);
 	}
 
-	public Page<AssuntoDTO> getAllByFilterPaged(String idString, String nome, String materiaIdString, Pageable pageable) {
+	public Page<AssuntoDTO> getAllByFilterPaged(String idString, String nome,
+												String materiaIdString, Pageable pageable) {
 		Long id = idString == null ? null : Long.parseLong(idString);
 		Long materiaId = materiaIdString == null ? null : Long.parseLong(materiaIdString);
 
@@ -74,7 +76,7 @@ public class AssuntoService {
 		return assuntoListDTO;
 	}
 	
-	public AssuntoDTO create(AssuntoDTO assuntoDTO) {
+	public AssuntoDTO create(@NotNull AssuntoDTO assuntoDTO) {
 		Materia materia = materiaRepository.findById(assuntoDTO.getMateria().getId())
 				.orElseThrow(() -> new ResourceNotFoundException("Matéria id " +
 				assuntoDTO.getMateria().getId() + " não encontrada"));
@@ -95,7 +97,7 @@ public class AssuntoService {
 		return modelMapper.map(assunto, AssuntoDTO.class);
 	}
 
-	public AssuntoDTO update(Long id, AssuntoDTO assuntoDTO) {
+	public AssuntoDTO update(Long id, @NotNull AssuntoDTO assuntoDTO) {
 		assuntoRepository.findById(id).orElseThrow(
 				() -> new ResourceNotFoundException("Assunto id = " + id + " não encontrada")
 		);
@@ -121,13 +123,11 @@ public class AssuntoService {
 	}
 
 	public void delete(Long id) {
-		try {
-			assuntoRepository.deleteById(id);
-		}catch(EmptyResultDataAccessException e) {
-			throw new ResourceNotFoundException("Id not found = " + id);
-		}catch(DataIntegrityViolationException e) {
-			throw new DataBaseException("Integrity violation");
+		if(!assuntoRepository.existsById(id)){
+			throw new ResourceNotFoundException("Assunto id " + id + " não encontrado");
 		}
+
+		assuntoRepository.deleteById(id);
 	}
 
 }

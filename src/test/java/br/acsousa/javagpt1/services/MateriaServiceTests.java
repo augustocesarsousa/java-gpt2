@@ -83,9 +83,9 @@ public class MateriaServiceTests {
     public void getAllByFilterPagedShouldReturnPage() {
         Pageable pageable = PageRequest.of(0, 12);
 
-        Page<MateriaDTO> materiasDTO = materiaService.getAllByFilterPaged(null, null, pageable);
+        Page<MateriaDTO> page = materiaService.getAllByFilterPaged(null, null, pageable);
 
-        Assertions.assertNotNull(materiasDTO);
+        Assertions.assertNotNull(page);
     }
 
     @Test
@@ -147,7 +147,6 @@ public class MateriaServiceTests {
 
     @Test
     public void deleteShouldThrowDatabaseExceptionWhenDependentId() {
-
         Assertions.assertThrows(DataBaseException.class, () -> {
             materiaService.delete(dependentId);
         });
@@ -156,8 +155,7 @@ public class MateriaServiceTests {
     }
 
     @Test
-    public void deleteShouldThrowResourceNotFoundExceptionWhenIdDoesNotExist() {
-
+    public void deleteShouldThrowResourceNotFoundExceptionWhenIdNonExists() {
         Assertions.assertThrows(ResourceNotFoundException.class, () -> {
             materiaService.delete(nonExistingId);
         });
