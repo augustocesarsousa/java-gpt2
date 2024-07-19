@@ -8,10 +8,12 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Entity
 @Table(name = "tb_materia")
+@NoArgsConstructor
 @AllArgsConstructor
 public class Materia {
 	
