@@ -9,11 +9,13 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Entity
 @Table(name = "tb_assunto")
 @AllArgsConstructor
+@NoArgsConstructor
 public class Assunto {
 
 	@Id

@@ -14,7 +14,11 @@ public class AssuntoFactory {
         return new Assunto(1L, "Tipos primitivos", MateriaFactory.createMateria());
     }
 
-    public static AssuntoDTO createAssuntoDTO() {
+    public static AssuntoDTO createExistingAssuntoDTO() {
         return new AssuntoDTO(1L, "Tipos primitivos", MateriaFactory.createMateria());
+    }
+
+    public static AssuntoDTO createNonExistingAssuntoDTO() {
+        return new AssuntoDTO(2L, "Orientação a objeto", MateriaFactory.createMateria());
     }
 }

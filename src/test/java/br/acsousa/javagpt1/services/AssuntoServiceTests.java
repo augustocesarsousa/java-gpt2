@@ -66,7 +66,7 @@ public class AssuntoServiceTests {
         existingAssuntoNome = "String";
         nonExistingAssuntoNome = "Array";
         assunto = AssuntoFactory.createAssunto();
-        assuntoDTO = AssuntoFactory.createAssuntoDTO();
+        assuntoDTO = AssuntoFactory.createExistingAssuntoDTO();
         materia = MateriaFactory.createMateria();
         page = new PageImpl<>(List.of(assunto));
 
